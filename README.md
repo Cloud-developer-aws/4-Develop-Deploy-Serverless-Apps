@@ -8,6 +8,8 @@
 4. [Exercise: Monitoring](#schema4)
 5. [REST API](schema5)
 6. [Exercise: Get Groups Starter](#schema6)
+7. [DynamoDB & CloudFormation: Introduction](#schema7)
+8. [Demo-Create DynamoDB table](#schema8)
 
 <hr>
 <a name='schema0'></a>
@@ -413,3 +415,113 @@ curl --location --request GET 'https://1w996fun5l.execute-api.us-east-1.amazonaw
 ```bash 
 {"items":[{"id":"1","name":"Dogs","description":"Only dog images here!"},{"id":"2","name":"Nature","description":"What can be a better object for photography"},{"id":"3","name":"Cities","description":"Creative display of urban settings"}]}% 
 ```
+
+<hr>
+<a name='schema7'></a>
+
+## 7. DynamoDB & CloudFormation: Introduction
+
+![dynamodb](./img/dynamodb_1.png)
+![dynamodb](./img/dynamodb_2.png)
+![dynamodb](./img/dynamodb_3.png)
+![dynamodb](./img/dynamodb_4.png)
+![dynamodb](./img/dynamodb_5.png)
+![dynamodb](./img/dynamodb_6.png)
+![dynamodb](./img/dynamodb_7.png)
+
+![dynamodb](./img/dynamodb_8.png)
+
+**DynamoDB Capacity Modes**
+
+DynamoDB has two capacity modes:
+
+- Provisioned capacity - we need to define the maximum amount of read/write requests DynamoDB can handle. The higher the limit we set, the more we have to pay per month. Requests are throttled if we go above the specified limit.
+- On-Demand - DynamoDB will handle as many requests as we send, and we pay per-request. Can be more expensive comparing to Provisioned capacity, but is better for applications with unpredictable traffic patterns
+
+![dynamodb](./img/dynamodb_9.png)
+![dynamodb](./img/dynamodb_10.png)
+Promise
+![dynamodb](./img/dynamodb_11.png)
+
+
+
+
+**CloudFormation**
+
+![CloudFormation](./img/cf_1.png)
+CloudFormation is a services for creation and management of AWS resources
+
+CloudFormation allows us to
+
+- Write YAML/JSON config file
+- Changes state of AWS resources
+- Version control the infrastructure
+CloudFormation is free and we only need to pay for created resources.
+![CloudFormation](./img/cf_2.png)
+![CloudFormation](./img/cf_3.png)
+
+<hr>
+<a name='schema8'></a>
+
+## 8. Demo-Create DynamoDB table
+### **Create DynamoDB table**
+Creating the table will be completed by defining it in serverless config to provision the table
+
+In `serverless.yml`:
+
+1. Define the name of the table as an environmental variable.
+- Allows other places in the serverless config to refer to it
+- Allows Lambda functions to have access to it to perform DynamboDB requests
+Format:
+```
+<name of table>-<name of the stage where application is deployed>
+```
+2. Add definition of DynamoDB table
+- Add `resources` where CloudFormation definition is added
+- Add `Resources` which is the start of the CloudFormation definition and defines the `KeySchema`, `Type`, `Properties`, and `BillingMode`.
+
+### **Connecting API To DynamoDB**
+Read Data from DynamoDB Table.
+
+In the current application, data can not yet be written to DynamoDB, so to test reading functionality, the table data will need to be manually inputted.
+
+
+**Added Dependencies**
+- client-dynamodb - a low-level DynamoDB client
+- lib-dynamodb - a high-level DynamoDB client
+
+In `getGroups.js`
+- remove the static data
+- add `import {DynamoDB}` from low-level client and `import {DynamoDBDocument}` from high-level client
+- include name of the table `const groupsTable = process.env.GROUPS_TABLE`
+- to read items from the table use `scan` on the high-level client name and specify the `TableName` .
+- Use the `items` field to get the list of items on the result to return to the API caller.** **
+**Permissions In** `serverles.yml`
+- Specify the IAM role for the Lambda function and provide the statements for the role
+```yml
+ iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Scan
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GROUPS_TABLE}
+```
+
+Sample code to read data from DynamoDB:
+```
+const dynamoDbClient = DynamoDBDocument.from(new DynamoDB())
+ ...
+const result = await dynamoDbClient.scan({ // Call parameters
+  TableName: "Users",
+  Limit: 20
+})
+```
+
+**Verify Application Can Read Table**
+Populate the table manually using the DynamoDB dashboard
+
+- Click on Tables in the dashboard menu and click the table name
+-  Click the Actions button and select Create Item
+- Define item attributes and create item
+- In the Terminal, enter: `curl --location --request GET <specify endpoint>`

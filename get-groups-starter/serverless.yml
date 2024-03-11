@@ -8,3 +8,9 @@ provider:
 
 functions:
   # TODO: Add a function definition
+  GetGroups:
+    handler: src/lambda/http/getGroups.handler
+    events: 
+      - http:
+          method: get
+          path: groups

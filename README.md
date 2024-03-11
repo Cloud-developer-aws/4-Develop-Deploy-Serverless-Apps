@@ -7,6 +7,7 @@
 3. [Exercise: Serverless Lambda](#schema3)
 4. [Exercise: Monitoring](#schema4)
 5. [REST API](schema5)
+6. [Exercise: Get Groups Starter](#schema6)
 
 <hr>
 <a name='schema0'></a>
@@ -378,3 +379,37 @@ There are three primary types of endpoint configuration:
 
 **API Gateway Stages**
 ![](./img/stages.png)
+
+<hr>
+<a name='schema6'></a>
+
+
+## 6. Exercise: Get Groups Starter
+1. Add code `getGroups.js`
+2. Add code `serverless.yml`
+3. Deploy
+```bash
+sls deploy 
+```
+```bash
+Deploying serverless-udagram-app to stage dev (us-east-1)
+
+✔ Service deployed to stack serverless-udagram-app-dev (104s)
+
+endpoint: GET - https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups
+functions:
+  GetGroups: serverless-udagram-app-dev-GetGroups (718 B)
+
+Need a faster logging experience than CloudWatch? Try our Dev Mode in Console: run "serverless dev"
+
+```
+![](./img/deply-get-groups.png)
+
+4. Testing, endpoint return `sls deploy`
+
+```bash
+curl --location --request GET 'https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups' 
+```
+```bash 
+{"items":[{"id":"1","name":"Dogs","description":"Only dog images here!"},{"id":"2","name":"Nature","description":"What can be a better object for photography"},{"id":"3","name":"Cities","description":"Creative display of urban settings"}]}% 
+```

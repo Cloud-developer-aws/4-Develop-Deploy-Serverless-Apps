@@ -5,6 +5,8 @@
 1. [Developing and Deploying Serverless](#schema1)
 2. [Introduction to Serverless](#schema2)
 3. [Exercise: Serverless Lambda](#schema3)
+4. [Exercise: Monitoring](#schema4)
+5. [REST API](schema5)
 
 <hr>
 <a name='schema0'></a>
@@ -165,6 +167,51 @@ npm install plugin-name --save-dev
 sls deploy -v
 ```
 
+### **Environment Variables**
+
+
+**Using Environment Variables**
+Here is how to define two environment variables, `SERVICE_NAME` and `URL` in `serverless.yaml`. Once deployed, these variables will be available to all Lambda functions.
+```yml
+service: http-metrics
+frameworkVersion: '3'
+
+provider:
+  ...
+  environment:
+    SERVICE_NAME: example
+    SERVICE_URL: https://example.com
+```
+
+Lambda functions can then access these variables using the `process.env` object:
+```
+const serviceName = process.env.SERVICE_NAME
+const url = process.env.SERVICE_URL
+
+```
+
+`IAM Roles`
+
+As a refresher, every IAM statement provides:
+
+- an array of actions,
+- the resource on which the action is performed
+- the effect of the permission (Allow/Deny)
+
+```
+provider:
+  ...
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: 'cloudwatch:PutMetricData'
+          Resource: '*'
+```
+
+
+
+
 <hr>
 <a name='schema3'></a>
 
@@ -263,3 +310,71 @@ Result
 }
 
 ```
+
+
+<hr>
+<a name='schema4'></a>
+
+
+## 4. Exercise: Monitoring
+
+1 . INSTALL 
+```bash
+npm install 
+```
+2. Create `lambda.js`
+
+3.  Create `serverless.yml`
+
+4. Create `package.json`
+5. Deploy 
+```bash
+serverless deploy
+
+```
+6. Invoke
+
+```bash
+serverless invoke --function http-monitor 
+
+```
+
+<hr>
+<a name='schema5'></a>
+
+## 5. REST API
+**Amazon API Gateway**
+What is API Gateway?
+- Entry point for API users
+- Pass requests to other services
+- Process incoming requests
+
+**API Gateway Targets**
+Possible targets for an HTTP request processed by API Gateway:
+
+- Lambda Function - call a Lambda function
+- HTTP Endpoint - call a public HTTP endpoint
+- AWS Service - send a request to an AWS service
+- Mock - return a response without calling a backend
+- VPC Link - access resource in an Amazon Virtual Private Cloud (VPC)
+
+
+![](./img/endpoint.png)
+
+
+**EndPoint Configurations**
+There are three primary types of endpoint configuration:
+
+- Configured per API
+- Public
+  - Edge Optimized Endpoint
+  - Regional Endpoint
+- Private VPC
+
+**Lambda integration modes**
+- Proxy - passes all request information to a Lambda function. Easier to use.
+- Non-proxy - allows to transform incoming request using Velocity Template Language
+
+
+**API Gateway Stages**
+![](./img/stages.png)

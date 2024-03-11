@@ -22,6 +22,7 @@ export async function handler(event) {
   // TODO: Implement the handler
   return {
     statusCode: 200,
+    // Allow Cors
     headers: {
       "Access-Control-Allow-Origin": "*",
     },

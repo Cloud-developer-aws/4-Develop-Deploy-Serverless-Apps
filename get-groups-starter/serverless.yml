@@ -14,3 +14,4 @@ functions:
       - http:
           method: get
           path: groups
+          cors: true

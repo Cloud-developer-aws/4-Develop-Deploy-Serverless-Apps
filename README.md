@@ -11,6 +11,7 @@
 7. [DynamoDB & CloudFormation: Introduction](#schema7)
 8. [Demo-Create DynamoDB table](#schema8)
 9. [Exercise: Create new group API](#schema9)
+10. [Demo Requests validation](#schema10)
 
 <hr>
 <a name='schema0'></a>
@@ -506,6 +507,11 @@ El cliente de alto nivel proporcionado por AWS SDK para JavaScript v3, específi
 Con el cliente de alto nivel, puedes trabajar con objetos JavaScript estándar y no necesitas preocuparte por los detalles de bajo nivel de la API de DynamoDB. Por ejemplo, en lugar de trabajar con atributos de elementos de tabla DynamoDB nativos, puedes trabajar con objetos JavaScript normales.
 
 
+### **Validate Requests**
+
+![](./img/request.png)
+
+
 
 <hr>
 <a name='schema8'></a>
@@ -730,3 +736,42 @@ REACT_APP_API_ENDPOINT=https://1w996fun5l.execute-api.us-east-1.amazonaws.com/de
 ``` 
 
 ![client](./img/client.png)
+
+
+<hr>
+<a name='schema10'></a>
+
+
+## 10. Demo Requests validation
+
+At this point in our application, a user can create an object with any data field because the application is not validating incoming requests. To fix this, we will implement validation for the `POST/groups` method.
+
+Define a json schema for an image group by:
+
+- Create a folder `models` to put all json schemas for the project
+- In `models` create a file for the json schema for the image groups `create-group-request.json`
+- In the file add the version schema, title, type and properties
+- Add schema to the function definition in `serverless.yml` by adding a request field and specifying the schema endpoint.
+```yml
+request:
+            schemas:
+              application/json: ${file(models/create-group-request.json)}
+```
+**Test** 
+
+```bash
+curl --location --request POST 'https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name1": "Name",
+    "description": "2345"
+}'
+```
+
+```bash
+{"message": "Invalid request body"}%   
+```
+
+
+
+

@@ -450,7 +450,7 @@ curl --location --request GET 'https://1w996fun5l.execute-api.us-east-1.amazonaw
 
 ![dynamodb](./img/dynamodb_8.png)
 
-**DynamoDB Capacity Modes**
+### **DynamoDB Capacity Modes**
 
 DynamoDB has two capacity modes:
 
@@ -465,7 +465,7 @@ Promise
 
 
 
-**CloudFormation**
+### **CloudFormation**
 
 ![CloudFormation](./img/cf_1.png)
 CloudFormation is a services for creation and management of AWS resources
@@ -478,6 +478,33 @@ CloudFormation allows us to
 CloudFormation is free and we only need to pay for created resources.
 ![CloudFormation](./img/cf_2.png)
 ![CloudFormation](./img/cf_3.png)
+
+### **Creating Items with DynamoDB**
+
+
+![Create Items](./img/create_items_3.png)
+![Create Items](./img/create_items_4.png)
+
+
+### **DynamoDB with Node.js**
+
+When it comes to AWS clients with Node.js we can use two AWS Node.js clients.
+
+- v2 version of the AWS SDK or
+- a newer v3 version.
+
+It is a modular SDK, meaning we can specify what parts of the AWS SDK we need in our application, instead of using a JavaScript package for all possible AWS services.
+
+Version 3 (v3) is recommended for new applications.
+![node](./img/node_db.png)
+
+![node](./img/node_db_2.png)
+
+El cliente de alto nivel proporcionado por AWS SDK para JavaScript v3, específicamente el módulo DynamoDBDocument. Este cliente de alto nivel es una capa por encima del cliente de bajo nivel y proporciona una interfaz simplificada y más fácil de usar para interactuar con DynamoDB.
+
+Con el cliente de alto nivel, puedes trabajar con objetos JavaScript estándar y no necesitas preocuparte por los detalles de bajo nivel de la API de DynamoDB. Por ejemplo, en lugar de trabajar con atributos de elementos de tabla DynamoDB nativos, puedes trabajar con objetos JavaScript normales.
+
+
 
 <hr>
 <a name='schema8'></a>

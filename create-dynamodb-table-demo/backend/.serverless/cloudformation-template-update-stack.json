@@ -169,7 +169,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/serverless-udagram-app/dev/1710171507481-2024-03-11T15:38:27.481Z/serverless-udagram-app.zip"
+          "S3Key": "serverless/serverless-udagram-app/dev/1710408756423-2024-03-14T09:32:36.423Z/serverless-udagram-app.zip"
         },
         "Handler": "src/lambda/http/getGroups.handler",
         "Runtime": "nodejs16.x",
@@ -320,7 +320,7 @@
         "GetGroupsLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1710171503954": {
+    "ApiGatewayDeployment1710408751776": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {

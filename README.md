@@ -97,6 +97,25 @@ npm start
 ``` 
 This should start a development server available at `http://localhost:3000.`
 
+### *Info sls**
+To have information about our servers we can use:
+```bash
+sls info
+```
+
+```bash
+(base) ➜  backend git:(main) ✗ sls info 
+service: serverless-udagram-app
+stage: dev
+region: us-east-1
+stack: serverless-udagram-app-dev
+endpoint: GET - https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups
+functions:
+  GetGroups: serverless-udagram-app-dev-GetGroups
+
+```
+
+
 
 
 <hr>
@@ -525,3 +544,22 @@ Populate the table manually using the DynamoDB dashboard
 -  Click the Actions button and select Create Item
 - Define item attributes and create item
 - In the Terminal, enter: `curl --location --request GET <specify endpoint>`
+
+**Manually Create Item in DynamoDB Table**
+![](./img/create_items.png)
+- JSON View
+```json
+{
+ "id": "1",
+ "name": "Dogs",
+ "description": "Only dog images here!"
+}
+```
+- Create item
+![](./img/create_items_2.png)
+
+```bash
+(base) ➜  backend git:(main) ✗ curl --location --request GET  https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups
+
+{"items":[{"description":"Only dog images here!","id":"1","name":"Dogs"}]}%     
+```

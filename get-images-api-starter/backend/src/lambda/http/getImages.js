@@ -11,6 +11,19 @@ export async function handler(event) {
   const groupId = event.pathParameters.groupId
 
   // TODO: Implement this function
+  const validGroupId = await groupExists(groupId)
+
+  if (!validGroupId) {
+    return {
+      statusCode: 404,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(value, {
+        error:'Group does not exist'
+      })
+    };
+  }
 
   return {
     statusCode: 201,

@@ -405,6 +405,25 @@ There are three primary types of endpoint configuration:
 **API Gateway Stages**
 ![](./img/stages.png)
 
+**Indexes in DynamoDB**
+
+DynamoDB supports two indexes types:
+
+Local secondary index (LSI):
+- Like an additional sort key
+- Allows to sort items by a different attribute
+- Added on the data in a table
+Global secondary index (GSI)
+- Allows to define a new partition key for the same data
+- Allows to define a new partition and sort key for the same data
+- Creates copy of the data in a table (data is available via GSI after some delay)
+
+
+
+
+
+
+
 <hr>
 <a name='schema6'></a>
 

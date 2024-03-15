@@ -913,6 +913,14 @@ curl --location --request POST '{endpoint create group}' --header 'Content-Type:
 
 ```
 
+```bash
+(base) ➜  backend git:(main) ✗ curl --location --request POST 'https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups' --header 'Content-Type: application/json' --data-raw '{
+    "name": "Namesssss",
+    "description": "234523456"
+}'
+{"newItem":{"id":"9d946566-5d3d-4918-b6cb-2c6b24500a71","name":"Namesssss","description":"234523456"}}%  
+```
+
 **Create a new image**
 Now having a new group, we can create an image in this group. We can do this using the following command (Make sure to replace {your-group-id} with the group ID you got in the previous step):
 ```bash
@@ -921,6 +929,17 @@ curl --location --request POST '{endpoint images}' \
 --data-raw '{
   "title": "New image"
 }'
+```
+
+```bash
+curl --location --request POST 'https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups/9d946566-5d3d-4918-b6cb-2c6b24500a71/images' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer FwoGZXIvYXdzEJP//////////wEaDFoC0+d9af1ErFDzPSLVAUk2S0eaUcGeJrfuF6+gSySuOq6rGjrEk1nyBWGhwV68Pdup4Tbw+RY6ZO9F7l0KS6N6mJzg72Y4Ebq6jmejMWIjn8WZL5YAz7mOoHBuxgHEpT4dHx4qhqL6K3zlGZrPNylxPOUyZxNIUWJ1VhFpYXHhol7NDE96ZCDd5wbvca2lsE2iDipc7GWV7a9cMDRIwFRID+P798m8yarEtiL5ItihD2pKH7HM1aEHIIeXuHAhzabRgsF6i9K3DyQdQk9qDO7ATd2EFF+CtF0Os3aPtvDZosZ5cSiKqNCvBjItmHkHYMcb42AFCScgmgP3B6aiNE6AD2UwPZzc4JxdYf8ZHMpIMk4cXX2MEjkj' \
+--data-raw '{
+  "title": "New image"
+}'
+
+{"newItem":{"groupId":"9d946566-5d3d-4918-b6cb-2c6b24500a71","timestamp":"2024-03-15T11:40:11.936Z","imageId":"baacdc31-4917-483f-bcb7-ca935530bb3a","title":"New image"}}%   
 ```
 
 

@@ -24,6 +24,7 @@ export async function handler(event) {
       })
     };
   }
+  const images = await getImagesPerGroup(groupId)
 
   return {
     statusCode: 201,
@@ -49,5 +50,15 @@ async function groupExists(groupId) {
 }
 
 async function getImagesPerGroup(groupId) {
-    // TODO: Implement this function
+  // TODO: Implement this function
+  const result = await dynamoDbDocument.query({
+    TableName: imagesTable,
+    KeyConditionExpression: "groupId = :groupId",
+    ExpressionAttributeValues: {
+      ":groupId": groupId,
+    },
+    ScanIndexForward: false,
+  });
+
+  return result.Items;
 }

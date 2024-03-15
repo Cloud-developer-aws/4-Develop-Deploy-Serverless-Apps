@@ -28,7 +28,7 @@ provider:
           Action:
             - dynamodb:Query
             - dynamodb:PutItem
-          Resourec: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.IMAGES_TABLE}
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.IMAGES_TABLE}
 
 functions:
   GetGroups:
@@ -91,7 +91,7 @@ resources:
           - AttributeName: timestamp
             AttributeType: S
         KeySchema:
-          - AttributeName: groupoId
+          - AttributeName: groupId
             KeyType: HASH
           - AttributeName: timestamp
             KeyType: RANGE

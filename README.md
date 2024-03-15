@@ -12,6 +12,8 @@
 8. [Demo-Create DynamoDB table](#schema8)
 9. [Exercise: Create new group API](#schema9)
 10. [Demo Requests validation](#schema10)
+11. [Exercise: Get images api starter](#schema11)
+12. [Event Processing](#schema12)
 
 <hr>
 <a name='schema0'></a>
@@ -511,6 +513,69 @@ Con el cliente de alto nivel, puedes trabajar con objetos JavaScript estándar y
 
 ![](./img/request.png)
 
+[Demo](./request-validation-demo/)
+
+### **Images API**
+![](./img/images_api.png)
+
+![](./img/images_api_2.png)
+
+![](./img/images_api_3.png)
+![](./img/images_api_4.png)
+
+A composite key in DynamoDB consists of two elements
+
+- Partition key - what partition to write the item to
+- Sort key - to sort elements with the same partition key
+- Together - uniquely identify an item, meaning there can be no two items in a table with the same values of the composite key.
+
+NOTE. If a table has a composite key, there can be multiple items with the same partition key, providing they have different values of the sort key.
+
+Composite keys allow to perform queries that can be used to get a subset of items with a specified partition key.
+
+![](./img/images_api-5.png)
+
+
+### **Queries With Node.js**
+
+
+![](./img/queries.png)
+
+An example of how to send a query to DynamoDB with Node.js.
+
+```js
+const dynamoDbDocument = DynamoDBDocument.from(new DynamoDB())
+
+ const result = await dynamoDbDocument.query({
+   TableName: 'GameScore',
+   KeyConditionExpression: 'GameId = :gameId',
+   ExpressionAttributeValues: {
+     ':gameId': '10'
+   }
+ })
+
+ const items = result.Items
+
+```
+
+**Path parameter**
+
+![](./img/parameters.png)
+
+`serverles.yml`
+```yml
+functions:
+    GetOrders:
+      handler: src/images.handler
+      events:
+        - http:
+            method: get
+            path: /groups/{groupId}/images
+
+```
+![](./img/parameters_2.png)
+
+
 
 
 <hr>
@@ -772,6 +837,126 @@ curl --location --request POST 'https://1w996fun5l.execute-api.us-east-1.amazona
 {"message": "Invalid request body"}%   
 ```
 
+<hr>
+<a name='schema11'></a>
+
+
+## 11. Exercise: Get images api starter
+
+[Get images api starter](./get-images-api-starter/)
+
+We will continue building an API for our application, and in this exercise, you will implement a new endpoint to fetch metadata for all images from a single image group. We won't work with image files yet, and this is something we will develop later. Instead, in this exercise, we will implement API to get metadata about images.
+
+
+We will define a new table to store image metadata and a Lambda function that returns items from it.
 
 
 
+You can create image metadata using the `POST /groups/{groupId}/images` endpoint. Here is an example of a curl command to do it:
+```
+curl --location --request POST '{Endpoint images}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "title": "New image"
+}'
+``` 
+The web application has been updated to allow getting a list of images from a group and creating a new image in a particular group.
+
+**Implementing a Lambda function**
+As always, we will start implementing a Lambda function, but it will be a bit more complex than what we wrote before.
+
+To return a list of images in the groups, you wound need to do the following steps:
+
+- Check if a group with the provided ID exists
+  - If the group does not exist, return a result with a 404 error code
+  - If the group exists, use the DynamoDB's Query method to fetch a list of images in the group
+
+To get a list of items from a group, you would have to use the Query action and specify an ID of a group from which to get a list of images. You can use the groupExists function to check if a group with the specified ID exists.
+
+
+**Serverless configuration**
+After you've implemented the Lambda function, you would to make a few changes to the `serverless.yaml` file. These changes, too, will be slightly more complex than before.
+
+First, you need to define a new table name for the table where we will store images.
+
+You would then need to define a resource definition for the new DynamoDB table. The main difference between the existing table and the images' table is that the new table will have a composite key with two fields:
+
+- `groupId`(Partition key) - an ID of a group where an image is located
+- `timestamp` (Sort key) - a string timestamp for when an image was created
+
+We must also add permissions for our Lambda functions to use the new table. You would need to add a new statement that allows using `dynamodb:Query` and `dynamodb:PutItem` actions on it.
+
+Finally, you would need to add a function definition that handles GET request to the `/gropus/{groupId}/images` path.
+
+**Testing**
+Just as before, you first need to deploy your application which you can do using the following commands:
+```bash
+npm install
+```
+```bash
+serverless deploy
+```
+To test your implementation, you would need to do the following three steps:
+
+- Create a new group
+- Create a new image object
+- Fetch all images for the group (using the endpoint you've implemented)
+
+
+**Create a new group**
+To create a new group, you would need to use the following `curl` command:
+```bash
+curl --location --request POST '{endpoint create group}' --header 'Content-Type: application/json' --data-raw '{
+    "name": "Name",
+    "description": "2345"
+}'
+
+```
+
+**Create a new image**
+Now having a new group, we can create an image in this group. We can do this using the following command (Make sure to replace {your-group-id} with the group ID you got in the previous step):
+```bash
+curl --location --request POST '{endpoint images}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "title": "New image"
+}'
+```
+
+
+**Fetching all images from a group (using the endpoint you've implemented)**
+Now, having an image in the database, we can fetch all images from the group. To do this, we will use the endpoint you've implemented in this exercise:
+```bash
+curl --location --request GET '{endpoint images}'
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+<a name='schema12'></a>
+
+## 12. Event Processing
+
+
+
+
+
+![](./img/procesing_1.png)
+
+![](./img/procesing_2.png)

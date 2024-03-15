@@ -200,7 +200,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-udagram-app/dev/1710429055134-2024-03-14T15:10:55.134Z/serverless-udagram-app.zip"
+                "S3Key": "serverless/serverless-udagram-app/dev/1710497911582-2024-03-15T10:18:31.582Z/serverless-udagram-app.zip"
               },
               "Handler": "src/lambda/http/getGroups.handler",
               "Runtime": "nodejs16.x",
@@ -230,7 +230,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-udagram-app/dev/1710429055134-2024-03-14T15:10:55.134Z/serverless-udagram-app.zip"
+                "S3Key": "serverless/serverless-udagram-app/dev/1710497911582-2024-03-15T10:18:31.582Z/serverless-udagram-app.zip"
               },
               "Handler": "src/lambda/http/createGroup.handler",
               "Runtime": "nodejs16.x",
@@ -253,24 +253,24 @@
               "CreateGroupLogGroup"
             ]
           },
-          "GetGroupsLambdaVersionRhsFFih4lJ395BwOPVZPDObOvEnMar7noNuBKP1axac": {
+          "GetGroupsLambdaVersionreXlAq7EV3rcSupyLC112pkbD5yAXGbTk17DF5y7o": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetGroupsLambdaFunction"
               },
-              "CodeSha256": "Nvc1HM9jLZmC61+oFp+l/AXDyZFCp4+JDnfq7j2GUYM="
+              "CodeSha256": "W1tgdTdD6VT4IsF58cJPtD9RW25421ts/3YdgwmrUHw="
             }
           },
-          "CreateGroupLambdaVersion3ku58luJEZ6lURUGvmptwN41fvNTRPUfd8hIrPX1o": {
+          "CreateGroupLambdaVersioncO7DhL89gxMc1Pb2ZM5F1xc2XOYlwIsXqDvIm5je0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateGroupLambdaFunction"
               },
-              "CodeSha256": "Nvc1HM9jLZmC61+oFp+l/AXDyZFCp4+JDnfq7j2GUYM="
+              "CodeSha256": "W1tgdTdD6VT4IsF58cJPtD9RW25421ts/3YdgwmrUHw="
             }
           },
           "ApiGatewayRestApi": {
@@ -483,7 +483,7 @@
               }
             }
           },
-          "ApiGatewayDeployment1710429053011": {
+          "ApiGatewayDeployment1710497907729": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -603,7 +603,7 @@
           "GetGroupsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetGroupsLambdaVersionRhsFFih4lJ395BwOPVZPDObOvEnMar7noNuBKP1axac"
+              "Ref": "GetGroupsLambdaVersionreXlAq7EV3rcSupyLC112pkbD5yAXGbTk17DF5y7o"
             },
             "Export": {
               "Name": "sls-serverless-udagram-app-dev-GetGroupsLambdaFunctionQualifiedArn"
@@ -612,7 +612,7 @@
           "CreateGroupLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateGroupLambdaVersion3ku58luJEZ6lURUGvmptwN41fvNTRPUfd8hIrPX1o"
+              "Ref": "CreateGroupLambdaVersioncO7DhL89gxMc1Pb2ZM5F1xc2XOYlwIsXqDvIm5je0"
             },
             "Export": {
               "Name": "sls-serverless-udagram-app-dev-CreateGroupLambdaFunctionQualifiedArn"
@@ -766,7 +766,7 @@
         "timeout": 6,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "GetGroupsLambdaVersionRhsFFih4lJ395BwOPVZPDObOvEnMar7noNuBKP1axac"
+        "versionLogicalId": "GetGroupsLambdaVersionreXlAq7EV3rcSupyLC112pkbD5yAXGbTk17DF5y7o"
       },
       "CreateGroup": {
         "handler": "src/lambda/http/createGroup.handler",
@@ -809,7 +809,7 @@
         "timeout": 6,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "CreateGroupLambdaVersion3ku58luJEZ6lURUGvmptwN41fvNTRPUfd8hIrPX1o"
+        "versionLogicalId": "CreateGroupLambdaVersioncO7DhL89gxMc1Pb2ZM5F1xc2XOYlwIsXqDvIm5je0"
       }
     },
     "resources": {
@@ -856,7 +856,7 @@
     "artifact": "/home/patricia/Documentos/UDACITY/cloud-developer/4-Develop-Deploy-Serverless-Apps/request-validation-demo/backend/.serverless/serverless-udagram-app.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/serverless-udagram-app/dev/1710429055134-2024-03-14T15:10:55.134Z",
+    "artifactDirectoryName": "serverless/serverless-udagram-app/dev/1710497911582-2024-03-15T10:18:31.582Z",
     "artifact": "serverless-udagram-app.zip"
   }
 }

@@ -15,6 +15,7 @@
 11. [Exercise: Get images api starter](#schema11)
 12. [Demo: Get image by ID](#schema12)
 13. [Event Processing](#schema13)
+14. [Demo - Create an S3 Bucket](#schema14)
 
 <hr>
 <a name='schema0'></a>
@@ -970,9 +971,6 @@ curl --location --request GET '{endpoint images}'
 
 ```
 
-
-
-
 <hr>
 <a name='schema12'></a>
 
@@ -1024,19 +1022,91 @@ IAmM permission
 [getImage](./7-get-images-api-starter/backend/src/lambda/http/getImage.js)
 
 
-
-
-
-
 <hr>
-<a name='schema12'></a>
+<a name='schema13'></a>
 
-## 12. Event Processing
-
-
-
+## 13. Event Processing
 
 
 ![](./img/procesing_1.png)
 
 ![](./img/procesing_2.png)
+
+<hr>
+<a name='schema14'></a>
+
+## 14. Demo - Create an S3 Bucket
+
+[Demo - Create an S3 Bucket](./8-create-s3-bucket-demo/)
+
+- Define an S3 bucket resource
+  -  Anybody can read images from it
+  - Need IAM permissions to write to it
+- Will generate presigned URLs later
+
+
+**Serverless configuration** `serverles.yml`
+
+Environment
+```yml
+  IMAGES_S3_BUCKET: udagram-images-${self:provider.stage}
+```
+Resource
+```yml
+AttachmentsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.IMAGES_S3_BUCKET}
+        PublicAccessBlockConfiguration:
+          BlockPublicPolicy: false
+          RestrictPublicBuckets: false
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+```
+Resource
+```yml
+  BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
+        Bucket: !Ref AttachmentsBucket
+```
+
+IAM Role
+```yml
+  - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+          Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
+```
+
+
+**How to test**
+Once you have these changes ready, you will need to install dependencies and deploy the application:
+```bash
+npm install
+```
+```bash
+serverless deploy
+```

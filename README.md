@@ -16,6 +16,7 @@
 12. [Demo: Get image by ID](#schema12)
 13. [Event Processing](#schema13)
 14. [Demo - Create an S3 Bucket](#schema14)
+15. [Exercise: Presigned URL](#schema15)
 
 <hr>
 <a name='schema0'></a>
@@ -1032,6 +1033,35 @@ IAmM permission
 
 ![](./img/procesing_2.png)
 
+
+
+### **Cloudformation References**
+
+![S3](./img/s3_2.png)
+
+![S3](./img/s3_3.png)
+
+
+In YAML files we can use one of the two forms:
+```
+Ref: logicalName
+```
+Short form:
+```
+!Ref logicalName
+```
+Ref function will return different values depending on what resource type it is used with.
+
+
+
+
+
+
+
+
+
+
+
 <hr>
 <a name='schema14'></a>
 
@@ -1110,3 +1140,12 @@ npm install
 ```bash
 serverless deploy
 ```
+
+![S3](./img/s3.png)
+
+
+<hr>
+<a name='schema14'></a>
+
+## 14. Exercise: Presigned URL
+In this exercise, you will implement a new feature that will allow clients to upload images to S3. To implement this, we will update the `createImage` function to return a presigned URL. A client will then use this URL to upload an image to S3 for others to read later. We will see how to generate a presigned URL and how to use it with `curl`.

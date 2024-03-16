@@ -1149,3 +1149,72 @@ serverless deploy
 
 ## 14. Exercise: Presigned URL
 In this exercise, you will implement a new feature that will allow clients to upload images to S3. To implement this, we will update the `createImage` function to return a presigned URL. A client will then use this URL to upload an image to S3 for others to read later. We will see how to generate a presigned URL and how to use it with `curl`.
+
+**Implementing a Lambda function**
+`createimage.js`
+
+```js
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+```
+
+**Serverless configuration** `serverles.yml`
+- Add Eviroment
+- IAM Role
+- Resource
+Resource
+```yml
+  BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 
+                - 's3:GetObject'
+                - 's3:PutObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
+        Bucket: !Ref AttachmentsBucket
+```
+
+**How to test**
+Once you have these changes ready, you will need to install dependencies and deploy the application:
+```bash
+npm install
+```
+```bash
+serverless deploy
+```
+
+
+```
+curl --location --request POST 'https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups/62651bed-9edd-4eb6-aba7-050610431ee3/images' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "title": "wilfredaaaa"
+}'
+```
+
+
+
+We can use imageUrl to upload an image to S3 using the following curl command:
+```bash
+curl -X PUT -T img/mono.jpeg -L "http://udagram-images-925845050374-dev.s3.amazonaws.com/a75d256a-3380-4478-aaf4-52e4c08bfb5f" 
+
+```
+
+**Client application**
+
+```bash
+npm install
+```
+
+```bash
+npm start
+```
+
+![](./img/s3_upload.png)

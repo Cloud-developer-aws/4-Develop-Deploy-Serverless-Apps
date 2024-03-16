@@ -67,6 +67,7 @@ async function createImage(groupId, imageId, event) {
     timestamp,
     imageId,
     // TODO: Add image an image URL
+    imageUrl: `http://${bucketName}.s3.amazonaws.com/${imageId}`,
     ...newImage
   }
   console.log('Storing new item: ', newItem)
@@ -84,5 +85,9 @@ async function getUploadUrl(imageId) {
     Bucket: bucketName,
     Key: imageId
   })
-// TODO: Create signed URL
+  // TODO: Create signed URL
+  const url = await getSignedUrl(s3Client, command, {
+    expiresIn: urlExpiration
+  })
+  return url
 }

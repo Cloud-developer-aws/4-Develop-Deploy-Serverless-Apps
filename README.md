@@ -13,7 +13,8 @@
 9. [Exercise: Create new group API](#schema9)
 10. [Demo Requests validation](#schema10)
 11. [Exercise: Get images api starter](#schema11)
-12. [Event Processing](#schema12)
+12. [Demo: Get image by ID](#schema12)
+13. [Event Processing](#schema13)
 
 <hr>
 <a name='schema0'></a>
@@ -972,12 +973,50 @@ curl --location --request GET '{endpoint images}'
 
 
 
+<hr>
+<a name='schema12'></a>
 
 
+## 12. Demo: Get image by ID
 
+- Add a globarl secondary index for the Images tables
+- Query images by image ID using the GSI
 
+**Serverless configuration** `serverles.yml`
+```yml
+ IMAGE_ID_INDEX: ImageIdIndex
+```
 
+```yml
+GetImage:
+    handler: src/lambda/http/getImage.handler
+    events:
+      - http:
+          method: get
+          path: images/{imageId}
+          cors: true
 
+```
+
+Add GlobalSecondaryIndexes
+```yml
+ GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.IMAGE_ID_INDEX}
+            KeySchema:
+            - AttributeName: imageId
+              KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+```
+IAmM permission
+```yml
+- Effect: Allow
+          Action:
+            - dynamodb:Query
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.IMAGES_TABLE}/index/${self:provider.environment.IMAGE_ID_INDEX}
+
+```
+**Implementing a Lambda function**
 
 
 

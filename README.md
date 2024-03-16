@@ -979,6 +979,9 @@ curl --location --request GET '{endpoint images}'
 
 ## 12. Demo: Get image by ID
 
+[Demo Get Image by ID](./7-get-images-api-starter/)
+
+
 - Add a globarl secondary index for the Images tables
 - Query images by image ID using the GSI
 
@@ -1018,7 +1021,7 @@ IAmM permission
 ```
 **Implementing a Lambda function**
 
-
+[getImage](./7-get-images-api-starter/backend/src/lambda/http/getImage.js)
 
 
 

@@ -1261,6 +1261,10 @@ npm start
 <a name='schema16'></a>
 
 ## 16. Demo S3 Events
+
+[Demo S3 Events](./10-s3-events-demo/)
+
+
 - Connect a Lambda function to S3 notifications
 - Only write a log statement for now
 

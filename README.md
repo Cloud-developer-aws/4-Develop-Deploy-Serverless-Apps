@@ -17,6 +17,7 @@
 13. [Event Processing](#schema13)
 14. [Demo - Create an S3 Bucket](#schema14)
 15. [Exercise: Presigned URL](#schema15)
+16. [Demo S3 Events](#schema16)
 
 <hr>
 <a name='schema0'></a>
@@ -1053,6 +1054,40 @@ Short form:
 Ref function will return different values depending on what resource type it is used with.
 
 
+**Processing S3 Events**
+
+![](./img/s3_4.png)
+
+Here is a configuration snippet that can be used to subscribe to S3 events:
+```yml
+functions:
+  process:
+    handler: file.handler
+    events:
+      - s3: bucket-name
+        event: s3:ObjectCreated:*
+        rules:
+            - prefix: images/
+            - suffix: .png
+
+
+```
+Use an existing bucket without creating a new one existing
+```yml
+functions:
+  process:
+    handler: file.handler
+    events:
+      - s3: bucket-name
+        event: s3:ObjectCreated:*
+        existing: true
+        rules:
+            - prefix: images/
+            - suffix: .png
+```
+
+[Demo S3 Events](./10-s3-events-demo/)
+
 
 
 
@@ -1218,3 +1253,11 @@ npm start
 ```
 
 ![](./img/s3_upload.png)
+
+
+
+
+<hr>
+<a name='schema16'></a>
+
+## 16. Demo S3 Events

@@ -1114,6 +1114,82 @@ A publisher publish a message to a topic
 ![](./img/sns_4.png)
 ![](./img/sns_5.png)
 
+**Full-Text Search**
+
+![](./img/full_text.png)
+![](./img/full_text_.png)
+
+Search Images By Name
+Full-text search allows us to search for images by name. This entails:
+
+- Supporting search by any field,
+- Tolerating misspellings,
+- Supporting highlighting, and
+- Rank search results
+
+DynamoDB does not support text search. DynamoDB is best for fast key-value access.
+
+**DynamoDB Stream**
+![](./img/dynamodb_stream.png)
+
+![](./img/dynamodb_stream_1.png)
+
+
+A Better Solution
+- Decouple updating both datastores
+- Have a stream of updates
+- Asynchronously execute each update
+![](./img/dynamodb_stream_2.png)
+![](./img/dynamodb_stream_3.png)
+
+**Decouple DynamoDB**
+Data Stream Services
+
+
+AWS provides the following services to implement data streaming:
+
+- Kinesis
+![](./img/data_stream_1.png)
+  - Separate data stream service
+  - Allows to store any streaming data
+  - Similar to Kafka (Open Source data streaming platform)
+- DynamoDB
+![](./img/data_stream_2.png)
+    - Provides a stream of all updates applied to DynamoDB tables
+  - Only contains operations performed on DynamoDB tables
+- Managed Streaming for Apache Kafka
+  - Managed version of Apache Kafka
+  - Allows to store any streaming data
+
+
+**Scaling a Data Stream**
+![](./img/data_stream_3.png)
+
+![](./img/data_stream_4.png)
+![](./img/data_stream_5.png)
+![](./img/data_stream_6.png)
+![](./img/data_stream_7.png)
+![](./img/data_stream_8.png)
+![](./img/data_stream_9.png)
+
+**OpenSearch**
+
+What is OpenSearch
+- OpenSearch is a managed service by AWS
+- Fork of another popular datastore called ElasticSearch.
+- CloudFormation will create two services:
+  - Provides an API that we can use to upload data and queries
+  - Provides a dashboard - UI for interacting with OS
+- Not Serverless
+- Data is stored in a JSON format
+
+![](./img/opensearch_1.png)
+
+![](./img/opensearch_2.png)
+
+
+![](./img/opensearch_3.png)
+
 
 
 

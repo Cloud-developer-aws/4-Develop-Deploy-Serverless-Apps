@@ -1261,3 +1261,32 @@ npm start
 <a name='schema16'></a>
 
 ## 16. Demo S3 Events
+- Connect a Lambda function to S3 notifications
+- Only write a log statement for now
+
+**Serverless configuration** `serverles.yml`
+```
+  ResizeImage:
+    handler: src/lambda/s3/resizeImage.handler
+    events:
+      - s3:
+          bucket: ${self:provider.environment.IMAGES_S3_BUCKET}
+          event: s3:ObjectCreated:*
+          existing: true
+```
+**Implementing a Lambda function** `resizeImage.js`
+```js
+export async function handler(event) {
+  console.log('Processing S3 event ', JSON.stringify(event))
+}
+
+```
+
+**How to test**
+Once you have these changes ready, you will need to install dependencies and deploy the application:
+```bash
+npm install
+```
+```bash
+serverless deploy
+```

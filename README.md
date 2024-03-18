@@ -1089,9 +1089,29 @@ functions:
 [Demo S3 Events](./10-s3-events-demo/)
 
 
+**Simple Notification System**
+S3 allows only one notification target, Simple Notification Service (SNS) is needed to receive one event and broadcast it to multiple targets.
+
+![](./img/sns.png)
+
+SNS is a service to send messages to other services.
+
+It has two main concepts:
+
+- Publishers - publish messages
+- Subscribers - consume incoming messages
+Publishers and subscribers communicate via topics:
+
+A publisher publish a message to a topic
+- A subscriber receives a message if it is subscribed to a topic
+- One topic can have many subscribers
+- Subscribers can use various protocols: Lambda, HTTP, email, SMS, etc.
 
 
-
+![](./img/sns_2.png)
+![](./img/sns_3.png)
+![](./img/sns_4.png)
+![](./img/sns_5.png)
 
 
 

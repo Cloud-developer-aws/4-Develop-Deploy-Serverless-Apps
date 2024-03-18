@@ -13,7 +13,39 @@ const thumbnailsBucket = process.env.THUMBNAILS_S3_BUCKET
 export async function handler(event) {
   console.log('Processing S3 event ', JSON.stringify(event))
   // TODO: Implement this function
+  for (const record of event.Records) {
+    await resizeImage(record)
+  }
 }
+async function resizeImage(record) {
+  const key = record.s3.object.key;
+  console.log("Processing image with key: ", key);
+
+  const getCommand = new GetObjectCommand({
+    Bucket: imagesBucket,
+    Key: key,
+  });
+  const response = await s3Client.send(getCommand);
+
+  const s3Body = response.Body;
+  const imageBuffer = await s3BodyToBuffer(s3Body);
+
+  const convertedBuffer = await sharp(imageBuffer)
+    .resize({
+      fit: sharp.fit.contain,
+      width: 150,
+    })
+    .toBuffer();
+
+  console.log(`Writing image back to S3 bucket: ${thumbnailsBucket}`);
+  const putCommand = new PutObjectCommand({
+    Bucket: thumbnailsBucket,
+    Key: key,
+    Body: convertedBuffer,
+  });
+  await s3Client.send(putCommand);
+}
+
 
 async function s3BodyToBuffer(s3Body) {
   const chunks = []

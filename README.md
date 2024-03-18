@@ -18,6 +18,7 @@
 14. [Demo - Create an S3 Bucket](#schema14)
 15. [Exercise: Presigned URL](#schema15)
 16. [Demo S3 Events](#schema16)
+17. [Exercise: Resize File on Upload](#schema17)
 
 <hr>
 <a name='schema0'></a>
@@ -1314,3 +1315,58 @@ npm install
 ```bash
 serverless deploy
 ```
+
+
+
+
+Exercise: Resize File on Upload
+Implementation
+In this exercise, you will implement a Lambda function that processes newly uploaded images, creates a smaller version of the same image, and uploads an image to a different S3 bucket. These smaller images are also called thumbnails. While we won't use the result images in our client application, we could display thumbnails instead of full-size images to improve the client application's performance.
+
+When working with S3 events and uploading new images, it is important to upload an image to a different bucket. Otherwise, a new image will trigger your Lambda function again, causing an infinite cycle of recursive calls.
+
+**Process S3 events in the Lambda function**
+
+To implement the function, you would have to process S3 events that are sent when a new image is uploaded. 
+
+**Get a key of an uploaded image in S3**
+To download a newly uploaded image, we first need to get its key. To get it, we need to use the following code:
+```js
+const key = record.s3.object.key
+```
+
+**Download an image**
+Now when we have a key of a new S3 object, we can download it
+
+**Resize an image**
+Now once we have a body of an image, we can resize it. 
+
+**Write an image to a different bucket**
+Once we have a resized image, we can write it back to S3. 
+
+
+**Deployment:Serverless configuration** `serverles.yml`
+Before you deploy an application, keep in mind that the names of S3 buckets should be globally unique across all AWS users. If you don't give your S3 buckets unique names, a deployment will fail.
+
+To ensure that your S3 buckets have unique names, add a random string to the end of S3 bucket names in the serverless.yml file. Let's say you want to add a random string ab4fe. You would need to change the following section like this:
+```yml
+  environment:
+    IMAGES_S3_BUCKET: udagram-images-ab4fe-${self:provider.stage}
+    THUMBNAILS_S3_BUCKET: udagram-thumbnail-ab4fe-${self:provider.stage}
+```
+
+**How to test**
+Once you have these changes ready, you will need to install dependencies and deploy the application:
+```bash
+npm install
+```
+```bash
+serverless deploy
+```
+To test your function, you should do the following:
+
+- Create a group
+- Create an image
+- Upload an image
+
+

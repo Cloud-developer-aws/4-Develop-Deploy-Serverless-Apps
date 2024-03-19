@@ -21,6 +21,7 @@
 17. [Exercise: Resize File on Upload](#schema17)
 18. [Demo - Enable a DynamoDB Stream](#schema18)
 19. [Exercise: OpenSearch Upload](#schema19)
+20. [Implementing Authentication](#schema20)
 
 <hr>
 <a name='schema0'></a>
@@ -1057,7 +1058,7 @@ Short form:
 Ref function will return different values depending on what resource type it is used with.
 
 
-**Processing S3 Events**
+### **Processing S3 Events**
 
 ![](./img/s3_4.png)
 
@@ -1092,7 +1093,7 @@ functions:
 [Demo S3 Events](./10-s3-events-demo/)
 
 
-**Simple Notification System**
+### **Simple Notification System**
 S3 allows only one notification target, Simple Notification Service (SNS) is needed to receive one event and broadcast it to multiple targets.
 
 ![](./img/sns.png)
@@ -1116,7 +1117,7 @@ A publisher publish a message to a topic
 ![](./img/sns_4.png)
 ![](./img/sns_5.png)
 
-**Full-Text Search**
+### **Full-Text Search**
 
 ![](./img/full_text.png)
 ![](./img/full_text_.png)
@@ -1131,7 +1132,7 @@ Full-text search allows us to search for images by name. This entails:
 
 DynamoDB does not support text search. DynamoDB is best for fast key-value access.
 
-**DynamoDB Stream**
+### **DynamoDB Stream**
 ![](./img/dynamodb_stream.png)
 
 ![](./img/dynamodb_stream_1.png)
@@ -1144,7 +1145,7 @@ A Better Solution
 ![](./img/dynamodb_stream_2.png)
 ![](./img/dynamodb_stream_3.png)
 
-**Decouple DynamoDB**
+### **Decouple DynamoDB**
 Data Stream Services
 
 
@@ -1164,7 +1165,7 @@ AWS provides the following services to implement data streaming:
   - Allows to store any streaming data
 
 
-**Scaling a Data Stream**
+### **Scaling a Data Stream**
 ![](./img/data_stream_3.png)
 
 ![](./img/data_stream_4.png)
@@ -1174,7 +1175,7 @@ AWS provides the following services to implement data streaming:
 ![](./img/data_stream_8.png)
 ![](./img/data_stream_9.png)
 
-**OpenSearch**
+### **OpenSearch**
 
 What is OpenSearch
 - OpenSearch is a managed service by AWS
@@ -1193,7 +1194,7 @@ What is OpenSearch
 ![](./img/opensearch_3.png)
 
 
-**Error Handling**
+### **Error Handling**
 
 ![](./img/error_1.png)
 ![](./img/error_2.png)
@@ -1224,7 +1225,7 @@ What is OpenSearch
     - Can process this queue later
 
 
-**What is AWS X-Ray**
+### **What is AWS X-Ray**
 - Implements distributed tracing
 - Allows application to send information about executed requests
 - Aggregates into a centralized view of the system
@@ -1577,3 +1578,68 @@ To get a Lambda's IAM role name, go to the function's page, and click on the lin
 This exercise cannot be performed because the udicity student account does not have permission to use opensearch
 
 https://knowledge.udacity.com/questions/1019664
+
+
+
+<hr>
+<a name='schema20'></a>
+
+## 20. Implementing Authentication
+
+### **Authentication vs. Authorization**
+- Authentication - application should know who the user is
+
+- Authorization - application should know what a user can do
+
+### **Authentication with API Gateway**
+
+![](./img/auth_1.png)
+
+![](./img/auth_2.png)
+![](./img/auth_3.png)
+![](./img/auth_4.png)
+![](./img/auth_5.png)
+![](./img/auth_6.png)
+![](./img/auth_7.png)
+![](./img/auth_8.png)
+![](./img/auth_9.png)
+![](./img/auth_10.png)
+
+
+### **Implementing A Custom Authorizer**
+![](./img/auth_11.png)
+![](./img/auth_12.png)
+![](./img/auth_13.png)
+![](./img/auth_14.png)
+
+
+A custom authorizer is a Lambda function that is executed before processing a request. Custom authorizer returns an IAM policy that defines what Lambda functions can be called by a sender of a request.
+
+Notice, that the result of a custom authorizer call is cached. A good practice is to provide access to all functions an owner of a token can
+
+Here is an example of a custom authorizer:
+```js
+exports.handler = async (event) => {
+   // Contains a token
+   const token = event.authorizationToken
+
+   // Check a token here
+
+  return {
+     principalId: 'user-id', // Unique user id
+     policyDocument: {
+       Version: '2012-10-17',
+       Statement: [
+         {
+           Action: 'execute-api:Invoke',
+           Effect: 'Allow',
+           Resource: '*'
+         }
+       ]
+     }
+   }
+
+ }
+```
+
+![](./img/auth_15.png)

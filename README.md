@@ -1753,7 +1753,7 @@ In this exercise, we won't use the client application since it does not set the 
 First, send a request without setting the Authorization header:
 ```bash
 curl --location \
-  --request POST 'endpoint' \
+  --request POST 'https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups' \
   --header 'Content-Type: application/json' \
   --data-raw '{"name": "New group", "description": "Group description"}'
 
@@ -1767,8 +1767,8 @@ Since this request does not have a correct header value, our API should return t
 Now try the same request but with the correct authorization header:
 ```bash
 curl --location \
-  --request POST 'endpoint' \
-  --header 'Content-Type: application/json' 
+  --request POST 'https://1w996fun5l.execute-api.us-east-1.amazonaws.com/dev/groups' \
+  --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer secret' \
   --data-raw '{"name": "New group","description": "Group description"}'
 Now, this request should succeed and return a newly created group:

@@ -11,7 +11,7 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
-   accountId: ${opt:accountId, '925845050374'} 
+  accountId: ${opt:accountId, '925845050374'} 
 
   environment:
     GROUPS_TABLE: Groups-${self:provider.stage}
@@ -67,6 +67,7 @@ functions:
       - http:
           method: post
           # TODO: Add "Auth" function as an authorizer
+          authorizer: Auth
           path: groups
           cors: true
           request:

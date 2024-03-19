@@ -1500,3 +1500,37 @@ export async function handler(event) {
 
 [OpenSearch Upload](./13-sync-dynamodb-with-opensearch/)
 
+**Implementation**
+- I've made some changes to the `SyncWithOpenSearch` function and added an environment variable that contains a hostname of the OpenSearch cluster. 
+
+- I've also made some changes to the Lambda function itself to make it easier to work with OpenSearch.
+- It already defines the `getClient` function that returns an OpenSearch client. 
+
+**Deploy**
+Before you deploy an application, keep in mind that the names of S3 buckets should be globally unique across all AWS users. If you don't give your S3 buckets unique names, a deployment will fail.
+
+To ensure that your S3 buckets have unique names, add a random string to the end of S3 bucket names in the `serverless.yml` file. Let's say you want to add an arbitrary string `ab4fe`. You would need to change the following section like this:
+```yml
+  environment:
+    IMAGES_S3_BUCKET: udagram-images-ab4fe-${self:provider.stage}
+    THUMBNAILS_S3_BUCKET: udagram-thumbnail-ab4fe-${self:provider.stage}
+```
+To run the application, we would need to do two things.
+
+First, as usual, we need to deploy our serverless application:
+```
+npm install
+serverless deploy
+```
+Second, we need to map an IAM role in AWS to a role defined in OpenSearch. This will specify what permissions a particular Lambda function has in OpenSearch.
+
+**OpenSearch role mapping**
+To do this, we need first to get an IAM role of our Lambda function and then use it to configure OpenSearch using its dashboard.
+
+To get a Lambda's IAM role name, go to the function's page, and click on the link in the "Execution role" section in the "Configuration" tab.
+
+
+
+This exercise cannot be performed because the udicity student account does not have permission to use opensearch
+
+https://knowledge.udacity.com/questions/1019664

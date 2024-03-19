@@ -1193,6 +1193,49 @@ What is OpenSearch
 ![](./img/opensearch_3.png)
 
 
+**Error Handling**
+
+![](./img/error_1.png)
+![](./img/error_2.png)
+
+```js
+ export const handler = async (event) => {
+   const image = {...}
+
+   await docClient.put({ // Write to DynamoDB
+     Item: image
+   })
+   
+   // What if OpenSearch is down? Should a client wait?
+   // What if a process crashes here? We will have different data.
+   // What if OpenSearch is slow to respond?
+   await openSearch.index(image) // Write to OpenSearch
+ }
+```
+![](./img/error_3.png)
+
+- A batch of records is retried
+  - If an exception is thrown
+  - Repeated till processed correctly or data expires
+  - Works if an upstream server is down
+- If a single record is invalid
+  - Discard a record
+  - Add to dead-letter to a queue
+    - Can process this queue later
+
+
+**What is AWS X-Ray**
+- Implements distributed tracing
+- Allows application to send information about executed requests
+- Aggregates into a centralized view of the system
+- Creates a map of the system
+- Works with Lambda, EC2, on-premise software, etc.
+
+Key Terms
+- Trace - a single request
+- Segment - each individual step in the execution of a request
+- Sub-segment - each individual operation in a segment
+
 
 
 

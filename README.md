@@ -19,6 +19,7 @@
 15. [Exercise: Presigned URL](#schema15)
 16. [Demo S3 Events](#schema16)
 17. [Exercise: Resize File on Upload](#schema17)
+18. [Demo - Enable a DynamoDB Stream](#schema18)
 
 <hr>
 <a name='schema0'></a>
@@ -1445,4 +1446,47 @@ To test your function, you should do the following:
 - Create an image
 - Upload an image
 
+<hr>
+<a name='schema18'></a>
 
+
+## 18. Demo - Enable a DynamoDB Stream
+
+- Update `serverles.yml` to enable a DynamoDB stream
+- See if we can process updates to a DynamoDB table
+
+
+Resources: 
+```yml
+ StreamSpecification:
+          StreamViewType: NEW_IMAGE
+```
+
+![](./img/data_stream_8.png)
+
+Functions
+```yml
+ SyncWithOpenSearch:
+    handler: src/lambda/dynamoDb/openSearchSync.handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt ImagesDynamoDBTable.StreamArn
+```
+`openSearchSync.js`
+
+```js
+export async function handler(event) {
+  for (const record of event.Records) {
+    console.log('Processing record', JSON.stringify(record))
+  }
+}
+
+```
+
+- Upload a new image using the client application
+- Go to the AWS Lambda dashboard and click on the function
+- The Function Overview will show the function is connected to DynamoDB
+- Check the Monitor section and the Logs to see recent invocations
+
+![](./img/demo-12.png)

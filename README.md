@@ -22,6 +22,7 @@
 18. [Demo - Enable a DynamoDB Stream](#schema18)
 19. [Exercise: OpenSearch Upload](#schema19)
 20. [Implementing Authentication](#schema20)
+21. [Exercise: Implement Mock Authorizer](#schema21)
 
 <hr>
 <a name='schema0'></a>
@@ -1643,3 +1644,134 @@ exports.handler = async (event) => {
 ```
 
 ![](./img/auth_15.png)
+
+<hr>
+<a name='schema21'></a>
+
+## 21. Exercise: Implement Mock Authorizer
+
+In this exercise, you will implement a simple authorizer that checks if a sender has included a secret word in the authorization header. For a request to go through, the authorization header should contain the value `Bearer secret`.
+
+
+**Implementing a Lambda function**
+
+You would have to first implement two functions in the `backend/src/lambda/auth/auth0Authorizer.js` file. First, you would need to implement the `verifyToken` function:
+
+```js
+function verifyToken(authHeader) {
+  // TODO: Implement this function
+}
+```
+
+
+It receives the value of the authorization token, and this function should check if it is equal to the `Bearer secret`. If the value is incorrect, it should throw an exception.
+
+Then you would have to use this function to implement the authorizer Lambda function. It should call the `verifyToken` and, depending on the result of this call, it should either allow or block the request.
+
+```js
+export async function handler(event) {
+  // Sample call to verify an authentication token
+  verifyToken(event.authorizationToken)
+  // TODO: Implement this function
+}
+```
+
+To allow a request to go through it should return the following IAM statement:
+```yml
+{
+  principalId: 'user',
+  policyDocument: {
+    Version: '2012-10-17',
+    Statement: [
+      {
+        Action: 'execute-api:Invoke',
+        Effect: 'Allow',
+        Resource: '*'
+      }
+    ]
+  }
+}
+```
+
+And to block a request, it should return the following IAM:
+```yml
+{
+  principalId: 'user',
+  policyDocument: {
+    Version: '2012-10-17',
+    Statement: [
+      {
+        Action: 'execute-api:Invoke',
+        Effect: 'Deny',
+        Resource: '*'
+      }
+    ]
+  }
+}
+```
+
+Serverless configuration** `serverles.yml`
+
+The last thing you would need to do is to configure the new function to be used as an authorizer. To do this, update the following part of the `serverless.yml` config.
+
+```yml
+functions:
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
+
+  GetGroups:
+    handler: src/lambda/http/getGroups.handler
+    events:
+      - http:
+          method: post
+          # TODO: Add "Auth" function as an authorizer
+          path: groups
+          cors: true
+          request:
+            schemas:
+              application/json: ${file(models/create-group-request.json)}
+
+```
+To set a function as an authorizer, we need to add a new line in the YAML configuration:
+```yml
+authorizer: Auth
+```
+Where Auth is the name of the function we want to use as an authorizer for GetGroups.
+
+**Deploying the serverless application**
+
+```bash
+npm install
+serverless deploy -v
+```
+
+**Testing**
+
+
+In this exercise, we won't use the client application since it does not set the authorization header yet. Instead, we will test it using the curl command.
+
+First, send a request without setting the Authorization header:
+```bash
+curl --location \
+  --request POST 'endpoint' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{"name": "New group", "description": "Group description"}'
+
+```
+
+Since this request does not have a correct header value, our API should return the following response:
+```bash
+{"message":"Unauthorized"}
+```
+
+Now try the same request but with the correct authorization header:
+```bash
+curl --location \
+  --request POST 'endpoint' \
+  --header 'Content-Type: application/json' 
+  --header 'Authorization: Bearer secret' \
+  --data-raw '{"name": "New group","description": "Group description"}'
+Now, this request should succeed and return a newly created group:
+
+{"newItem":{"id":"480f0b46-2931-4f30-9013-9af1eca41a03","name":"New group","description":"Group description"}}
+```

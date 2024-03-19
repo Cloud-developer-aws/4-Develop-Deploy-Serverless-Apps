@@ -1650,6 +1650,10 @@ exports.handler = async (event) => {
 
 ## 21. Exercise: Implement Mock Authorizer
 
+[Exercise: Implement Mock Authorizer](./14-mock-authorizer/)
+
+
+
 In this exercise, you will implement a simple authorizer that checks if a sender has included a secret word in the authorization header. For a request to go through, the authorization header should contain the value `Bearer secret`.
 
 

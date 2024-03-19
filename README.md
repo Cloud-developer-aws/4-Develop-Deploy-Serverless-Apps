@@ -20,6 +20,7 @@
 16. [Demo S3 Events](#schema16)
 17. [Exercise: Resize File on Upload](#schema17)
 18. [Demo - Enable a DynamoDB Stream](#schema18)
+19. [Exercise: OpenSearch Upload](#schema19)
 
 <hr>
 <a name='schema0'></a>
@@ -1490,3 +1491,12 @@ export async function handler(event) {
 - Check the Monitor section and the Logs to see recent invocations
 
 ![](./img/demo-12.png)
+
+
+<hr>
+<a name='schema19'></a>
+
+## 19. Exercise: OpenSearch Upload
+
+[OpenSearch Upload](./13-sync-dynamodb-with-opensearch/)
+

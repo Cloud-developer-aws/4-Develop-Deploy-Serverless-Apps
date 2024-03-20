@@ -22,7 +22,10 @@
 19. [Exercise: OpenSearch Upload](#schema19)
 20. [Implementing Authentication](#schema20)
 21. [Exercise: Implement Mock Authorizer](#schema21)
-22. [Demo- Create Auth0 Application](#schema22)
+22. [Demo - Create Auth0 Application](#schema22)
+23. [Exercise: Extract User ID](#schema23)
+
+
 
 <hr>
 <a name='schema0'></a>
@@ -1793,6 +1796,56 @@ jsonwebotoken.verify(jwt, secret);
 
 The downside of using HS256 is that we need to securely store the signing secret key in key storage.
 
+### **Storing Secrets**
+
+![](./img/auth_36.png)
+![](./img/auth_37.png)
+![](./img/auth_38.png)
+![](./img/auth_39.png)
+![](./img/auth_40.png)
+![](./img/auth_41.png)
+
+```js
+ const client = new SecretsManagerClient(config);
+
+ const command = new GetSecretValueCommand({
+   SecretId: 'secret-id'
+ });
+ const response = await client.send(command);
+
+ const secret = data.SecretString
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <hr>
 <a name='schema21'></a>
 
@@ -1925,7 +1978,7 @@ Now, this request should succeed and return a newly created group:
 <hr>
 <a name='schema22'></a>
 
-## 22. Demo- Create Auth0 Application
+## 22. Demo - Create Auth0 Application
 
 - Loggin in [Auth0](https://auth0.com/)
 - Create a New Application
@@ -1954,3 +2007,93 @@ Now, this request should succeed and return a newly created group:
   43200  
 ```
 - Save Changes
+
+
+
+<hr>
+<a name='schema23'></a>
+
+## 23. Exercise: Extract User ID
+
+
+[Exercise: Extract User ID](./15-extract-user-id/)
+
+
+**Implementation**
+In this exercise, you will have to implement two new features in the image-sharing application:
+
+- A function that extracts a user id from a JWT token
+- Update the `CreateGroup` function and store the ID of a user with each new group object stored in DynamoDB
+
+**Create a new Auth0 app**
+First, you would need to create a new Auth0 application. `Demo - Create Auth0 Application`
+
+Then configure "Allowed Callback URLs" and "Allowed Web Origins" as we did in this lesson, and set them to `http://localhost:3000, https://*.udacity-student-workspaces.com`, so the client application could work either in the Udacity environment or on your local machine.
+
+
+**Copy a certificate that can be used to validate a JWT token**
+We need to get a certificate that can be used to verify a JWT token. We can programmatically fetch it from Auth0 when we validate a token, but to keep the exercise more straightforward, we will just copy it for now and store it as a string in a function's source code.
+
+To do this, open the "Advanced settings" section at the bottom of the page. And copy the certificate from the "Certificates" section
+
+
+Paste the certificate in the `backend/src/lambda/auth/auth0Authorizer.js`
+
+
+**Implement "getUserId" function**
+
+First, we need to extract a user's ID from a JWT token. To do this, you need to implement the `getUserId` function in the `src/auth/utils.js` file. For this, you would have to use another function called `decode` from the `jsonwebtoken` library. It does not validate a JWT token, but just parses it and returns its payload.
+
+
+
+**Store a user ID in a DynamoDB table**
+
+Now, if we want to store an ID of a user when we create a new item, we can use `getUserId` function.
+
+First, we need to get a JWT token in an event handler. To do this, add the following code in a handler in the `createGroup.js` file.
+
+Now to store a user ID, we need to extract it from a JWT token using the `getUserId` function
+
+And store it to the DynamoDB table
+
+
+
+**Configure a web application**
+
+The last step is configuring our web application to use the new Auth0 application we've created. To do this, you need to change the `client/.env` file in the web application. You need to provide the following values:
+
+```
+REACT_APP_AUTH0_DOMAIN=test-endpoint.auth0.com
+REACT_APP_AUTH0_CLIENT_ID=...
+REACT_APP_API_ENDPOINT=https://{your-app-ID}.execute-api.us-east-1.amazonaws.com/dev
+```
+
+You can copy those values from the configuration page for your Auth0 application.
+
+You also need to configure `REACT_APP_API_ENDPOINT` to point to the API of your serverless application.
+
+**Preparations to test your function**
+
+To test your function, you should do the following:
+- Deploy the serverless application
+- Start the web application
+
+
+**Deploying the serverless application**
+```bash
+npm install
+serverless deploy
+```
+
+**Start the web application**
+
+```bash
+npm install
+npm start
+```
+
+**Testing the result application**
+
+To test the result application, go to the client application. Click the "Log in" button to log in using the new Auth0 application you created.
+
+Now you can create a new group with any name you like.

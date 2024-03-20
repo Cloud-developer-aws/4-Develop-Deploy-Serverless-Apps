@@ -2097,3 +2097,17 @@ npm start
 To test the result application, go to the client application. Click the "Log in" button to log in using the new Auth0 application you created.
 
 Now you can create a new group with any name you like.
+
+
+
+**Error**
+```
+Could not upload an image: Service not found: https://test-endpoint.auth0.com/api/v2/
+```
+
+Solve: `CreateGroup.jsx`, `CreateImage.jsx`, `GroupsList.jsx`, `ImagesList.jsx`
+
+```js
+    //audience: `https://test-endpoint.auth0.com/api/v2/`,
+    audience: `https://dev-ls8xao57gpsnxuq4.us.auth0.com/api/v2/`, 
+```

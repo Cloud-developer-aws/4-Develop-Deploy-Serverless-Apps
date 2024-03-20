@@ -1612,6 +1612,7 @@ https://knowledge.udacity.com/questions/1019664
 ![](./img/auth_12.png)
 ![](./img/auth_13.png)
 ![](./img/auth_14.png)
+![](./img/auth_15.png)
 
 
 A custom authorizer is a Lambda function that is executed before processing a request. Custom authorizer returns an IAM policy that defines what Lambda functions can be called by a sender of a request.
@@ -1643,7 +1644,125 @@ exports.handler = async (event) => {
  }
 ```
 
-![](./img/auth_15.png)
+### **Implementing Authentication**
+
+
+
+![](./img/auth_16.png)
+![](./img/auth_17.png)
+![](./img/auth_18.png)
+![](./img/auth_19.png)
+![](./img/auth_20.png)
+![](./img/auth_21.png)
+
+
+### **Authentication with AWS Lambda**
+A service is needed to store information about users:
+
+- Usernames and passwords
+- Groups users belong to
+- Permissions
+![](./img/auth_17.png)
+
+### **OAuth Protocol**
+
+![](./img/auth_22.png)
+![](./img/auth_23.png)
+
+**Why Use OAuth**
+
+OAuth essentially provides access to user accounts but restricts what operations may be performed by a 3rd party system.
+
+OAuth provides special credentials to enforce this type of restriction.
+
+
+![](./img/auth_24.png)
+
+### **OAuth Flow**
+
+![](./img/auth_25.png)
+**OAuth and OpenID**
+
+`OAuth and OpenID` are protocols defining interactions between systems.
+
+- `OAuth 2.0` - authorization for a third-party to access resources (e.g. Gmail contacts)
+- `OpenID` - authentication on top of OAuth
+
+
+![](./img/auth_26.png)
+![](./img/auth_27.png)
+
+**OAuth** is a protocol that enables secure authorization of third-party applications to access protected resources, whereas **Auth0** is a service that provides comprehensive authentication and authorization solutions for applications.
+
+
+![](./img/auth_28.png)
+
+
+
+
+### **Verifying JWT Token**
+![](./img/auth_29.png)
+
+
+OAuth allows the use of one of the two algorithms that it can use to sign a JWT token:
+
+**Symmetric (HS256)**
+
+- The same key for signing a token (by Auth0) and verifying a token (by our application)
+- We need to store this key and make it available to our application
+- If this key leaks, an attacker can sign fraudulent JWT tokens.
+
+![](./img/auth_30.png)
+
+
+**Asymmetric (RS256)**
+
+- Different keys are used for signing and verifying a token
+- Auth0 is responsible for storing a token
+
+
+![](./img/auth_31.png)
+
+
+Here is a code snippet that can be used to verify a JWT token with Node.js.
+
+To verify a JWT signed with RS256 (an asymmetric signing algorithm), we need to provide a certificate:
+
+```js
+import jsonwebotoken from 'jsonwebtoken'
+
+const jwtToken = '...'
+const certificate = '...'
+
+jsonwebotoken.verify(jwt, certificate, { algorithms: ['RS256'] })
+// If an exception is not thrown, a JWT is valid
+```
+If a token was signed using HS256 (a symmetric signing algorithm) we need to use a secret used for signing when verifying a JWT:
+
+```js
+import jsonwebotoken from 'jsonwebtoken'
+
+const jwtToken = '...'
+const secret = '...'
+
+jsonwebotoken.verify(jwt, secret)
+// If an exception is not thrown, a JWT is valid
+```
+The downside of using HS256 is that we need to securely store the signing secret key in key storage.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <hr>
 <a name='schema21'></a>

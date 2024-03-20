@@ -13,10 +13,13 @@ export async function handler(event) {
 
   const parsedBody = JSON.parse(event.body)
 
+  const authorization = event.headers.Authorization;
   // TODO: Extract user ID using "getUserId"
+  const userId = getUserId(authorization)
   const newItem = {
     id: itemId,
     // TODO: Add "userId" field to the new item
+    userId,
     ...parsedBody
   }
 

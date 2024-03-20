@@ -6,6 +6,10 @@ import jsonwebtoken from 'jsonwebtoken'
  * @returns a user id from the JWT token
  */
  export function getUserId(authorizationHeader) {
-    // TODO: Implement this function
-    return ''
+   // TODO: Implement this function
+   const split = authorizationHeader.split(' ')
+   const jwtToken = split[1]
+
+   const decodedJwt = jsonwebtoken.decode(jwtToken)
+   return decodedJwt.sub
   }

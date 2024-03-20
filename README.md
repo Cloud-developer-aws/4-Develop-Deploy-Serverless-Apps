@@ -24,6 +24,7 @@
 21. [Exercise: Implement Mock Authorizer](#schema21)
 22. [Demo - Create Auth0 Application](#schema22)
 23. [Exercise: Extract User ID](#schema23)
+24. [Exercise: Use Middy Middleware](#schema24)
 
 
 
@@ -1817,30 +1818,24 @@ The downside of using HS256 is that we need to securely store the signing secret
 ```
 
 
+### **Lambda Middleware**
+
+![](./img/midd_1.png)
 
 
+Here is an example of how to use `cors` Middy middleware in Lambda:
+```js
+import middy from '@middy/core'
+import cors from '@middy/http-cors'
+import httpErrorHandler from '@middy/http-error-handler'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const handler = middy()
+  .use(cors())
+  .handler(async (event) => {
+    ...
+  })
+```
+![](./img/midd_2.png)
 
 
 
@@ -2111,3 +2106,13 @@ Solve: `CreateGroup.jsx`, `CreateImage.jsx`, `GroupsList.jsx`, `ImagesList.jsx`
     //audience: `https://test-endpoint.auth0.com/api/v2/`,
     audience: `https://dev-ls8xao57gpsnxuq4.us.auth0.com/api/v2/`, 
 ```
+
+
+
+
+<hr>
+<a name='schema23'></a>
+
+
+
+## 24. Exercise: Use Middy Middleware

@@ -2158,3 +2158,4 @@ First, create a new group and a new image in this group. Then, check that both t
 
 Second, check if requesting a list of images for a non-existing group returns the `404` error. To do this, open the Developer tools in your browser and go to this path: `images/wrong-group`. Because there is no group with ID `wrong-group`, this call should return an error. Open the response, and check if it has the `404` status code.
 
+![](./img/midd_5.png)

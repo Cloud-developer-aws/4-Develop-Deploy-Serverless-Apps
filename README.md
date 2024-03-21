@@ -1847,7 +1847,7 @@ export const handler = middy()
 
 ![](./img/sec_3.png)
 
-
+![](./img/sec_4.png)
 
 
 
@@ -2205,4 +2205,36 @@ Second, check if requesting a list of images for a non-existing group returns th
 ## 25. Demo - Lambda Minimal Privileges
 - All our functions have the same set of permissions
 - Need to set minimal required privileges per function
- 
+
+`serverles.yml`
+
+```yml
+plugins:
+  - serverless-iam-roles-per-function
+```
+Functions
+```yml
+
+  GetGroups:
+    handler: src/lambda/http/getGroups.handler
+    events:
+      - http:
+          method: get
+          authorizer: Auth
+          path: groups
+          cors: true
+ iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.GROUPS_TABLE}
+      - Effect: "Allow"
+        Action:
+          - "xray:PutTraceSegments"
+          - "xray:PutTelemetryRecords"
+        Resource:
+          - "*"
+```
+
+
+![](./img/sec_5.png)

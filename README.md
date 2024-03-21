@@ -25,6 +25,7 @@
 22. [Demo - Create Auth0 Application](#schema22)
 23. [Exercise: Extract User ID](#schema23)
 24. [Exercise: Use Middy Middleware](#schema24)
+25. [Demo - Lambda Minimal Privileges](#schema25)
 
 
 
@@ -1837,6 +1838,41 @@ export const handler = middy()
 ```
 ![](./img/midd_2.png)
 
+### **Lambda Functions Security**
+
+
+![](./img/sec_1.png)
+
+![](./img/sec_2.png)
+
+![](./img/sec_3.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2111,7 +2147,7 @@ Solve: `CreateGroup.jsx`, `CreateImage.jsx`, `GroupsList.jsx`, `ImagesList.jsx`
 
 
 <hr>
-<a name='schema23'></a>
+<a name='schema24'></a>
 
 
 
@@ -2159,3 +2195,14 @@ First, create a new group and a new image in this group. Then, check that both t
 Second, check if requesting a list of images for a non-existing group returns the `404` error. To do this, open the Developer tools in your browser and go to this path: `images/wrong-group`. Because there is no group with ID `wrong-group`, this call should return an error. Open the response, and check if it has the `404` status code.
 
 ![](./img/midd_5.png)
+
+
+
+
+<hr>
+<a name='schema25'></a>
+
+## 25. Demo - Lambda Minimal Privileges
+- All our functions have the same set of permissions
+- Need to set minimal required privileges per function
+ 

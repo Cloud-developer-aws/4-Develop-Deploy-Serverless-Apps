@@ -26,6 +26,7 @@
 23. [Exercise: Extract User ID](#schema23)
 24. [Exercise: Use Middy Middleware](#schema24)
 25. [Demo - Lambda Minimal Privileges](#schema25)
+26. [Demo - Ports and Adapters](#schema26)
 
 
 
@@ -1857,6 +1858,7 @@ export const handler = middy()
 ![](./img/sec_6.png)
 ![](./img/sec_7.png)
 ![](./img/sec_8.png)
+![](./img/sec_9.png)
 
 
 
@@ -2243,3 +2245,22 @@ Functions
 
 
 ![](./img/sec_5.png)
+
+
+
+
+<hr>
+<a name='schema26'></a>
+
+
+## 26. Ports and Adapters
+- Look at an example of the Ports and Adapters architecture
+- Split two HTTP handlers into different layers
+
+
+- `scr/businessLogic`
+  - create `groups.mjs`
+- `scr/dataLayer`
+  - `groupsAccess.mjs`
+- `scr/lambda/http`
+  - `createGroup.js`

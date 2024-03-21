@@ -1851,7 +1851,12 @@ export const handler = middy()
 
 
 
+### **Ports and Adapters**
 
+![](./img/sec_5.png)
+![](./img/sec_6.png)
+![](./img/sec_7.png)
+![](./img/sec_8.png)
 
 
 

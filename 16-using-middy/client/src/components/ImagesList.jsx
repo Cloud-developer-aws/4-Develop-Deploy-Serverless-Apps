@@ -14,7 +14,8 @@ export function ImagesList() {
     async function fetchImages() {
       try {
         const accessToken = await getAccessTokenSilently({
-          audience: `https://test-endpoint.auth0.com/api/v2/`,
+          //audience: `https://test-endpoint.auth0.com/api/v2/`,
+          audience: `https://dev-ls8xao57gpsnxuq4.us.auth0.com/api/v2/`, 
           scope: 'read:images'
         })
         const images = await getImages(accessToken, groupId)

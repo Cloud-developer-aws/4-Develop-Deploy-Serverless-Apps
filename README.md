@@ -2116,3 +2116,45 @@ Solve: `CreateGroup.jsx`, `CreateImage.jsx`, `GroupsList.jsx`, `ImagesList.jsx`
 
 
 ## 24. Exercise: Use Middy Middleware
+
+In this exercise, you would rewrite two of the Lambda handlers using the `middy` library. You would have to rewrite two functions:
+
+- `backend/src/lambda/http/getGroups.js`
+- `backend/src/lambda/http/getImages.js`
+
+To use `middy` you would need to call the `middy` method, add the necessary middleware, and provide the handler's code using the handler method.
+
+
+Instead of explicitly returning an error response, you can now throw an exception with an HTTP response error code. To do this, create an exception using the `createError` function from the `http-errors` library.
+
+If this exception is thrown, the `httpErrorHandler` middleware will catch it and convert it into a correct Lambda response.
+
+
+**Preparations to test your function**
+
+To test your function, you should do the following:
+- Deploy the serverless application
+* Start the web application
+
+
+**Deploying the serverless application**
+```bash
+npm install
+serverless deploy
+```
+
+**Start the web application**
+
+```bash
+npm install
+npm start
+```
+
+**Testing**
+
+To test your implementation, it is better to use the client application since it already sets the correct authorization header.
+
+First, create a new group and a new image in this group. Then, check that both the list of groups and the list of images in this group are displayed correctly.
+
+Second, check if requesting a list of images for a non-existing group returns the `404` error. To do this, open the Developer tools in your browser and go to this path: `images/wrong-group`. Because there is no group with ID `wrong-group`, this call should return an error. Open the response, and check if it has the `404` status code.
+
